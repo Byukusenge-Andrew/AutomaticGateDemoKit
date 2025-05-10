@@ -1,28 +1,28 @@
 #include <Servo.h>
 
-// Pin definitions (as provided)
-const int TRIG_PIN = 2;    // Ultrasonic Trigger
-const int ECHO_PIN = 3;    // Ultrasonic Echo
-const int RED_LED = 4;     // Red LED (Gate Closed)
-const int BLUE_LED = 5;    // Blue LED (Gate Open)
-const int SERVO_PIN = 6;   // Servo Motor
-const int GND_PIN1 = 7;    // Hardwired GND (LOW, unused)
-const int GND_PIN2 = 8;    // Hardwired GND (LOW, unused)
-const int BUZZER_PIN = 12; // Buzzer
+
+const int TRIG_PIN = 2;   
+const int ECHO_PIN = 3;    
+const int RED_LED = 4;   
+const int BLUE_LED = 5;   
+const int SERVO_PIN = 6;  
+const int GND_PIN1 = 7;   
+const int GND_PIN2 = 8;  
+const int BUZZER_PIN = 12; 
 
 // Constants
-const int openAngle = 103;      // Servo angle for open gate
-const int closeAngle = 7;      // Servo angle for closed gate
-const int distanceThreshold = 20; // Distance in cm to trigger gate
-const int indicatorDuration = 5000; // 5 seconds for LED/buzzer
-const int buzzerInterval = 250;    // Buzzer beep interval (ms)
+const int openAngle = 103;      
+const int closeAngle = 7;      
+const int distanceThreshold = 20; 
+const int indicatorDuration = 5000;
+const int buzzerInterval = 250;   
 
 // Variables
-Servo gateServo;               // Servo object
-unsigned long lastDetectionTime; // Time of last object detection
-unsigned long gateOpenTime;     // Time when gate opened
-bool gateOpen = false;         // Gate state
-bool indicatorsActive = false;  // LED/buzzer state
+Servo gateServo;              
+unsigned long lastDetectionTime; 
+unsigned long gateOpenTime;    
+bool gateOpen = false;        
+bool indicatorsActive = false; 
 
 void setup() {
   // Initialize pins
@@ -31,15 +31,15 @@ void setup() {
   pinMode(RED_LED, OUTPUT);
   pinMode(BLUE_LED, OUTPUT);
   pinMode(BUZZER_PIN, OUTPUT);
-  pinMode(GND_PIN1, OUTPUT); digitalWrite(GND_PIN1, LOW); // Hardwired GND
-  pinMode(GND_PIN2, OUTPUT); digitalWrite(GND_PIN2, LOW); // Hardwired GND
+  pinMode(GND_PIN1, OUTPUT); digitalWrite(GND_PIN1, LOW); 
+  pinMode(GND_PIN2, OUTPUT); digitalWrite(GND_PIN2, LOW);
   
   // Attach servo and set initial position
   gateServo.attach(SERVO_PIN);
-  smoothServoMove(closeAngle); // Start with gate closed
-  digitalWrite(RED_LED, HIGH); // Red LED ON
-  digitalWrite(BLUE_LED, LOW); // Blue LED OFF
-  digitalWrite(BUZZER_PIN, LOW); // Buzzer OFF
+  smoothServoMove(closeAngle); 
+  digitalWrite(RED_LED, HIGH); 
+  digitalWrite(BLUE_LED, LOW); 
+  digitalWrite(BUZZER_PIN, LOW); 
   
   // Initialize serial for debugging
   Serial.begin(9600);
@@ -66,9 +66,9 @@ void loop() {
     }
     lastDetectionTime = millis(); // Update detection time
   } else {
-    // No object detected, check if gate should close
+    
     if (gateOpen && millis() - lastDetectionTime > indicatorDuration) {
-      smoothServoMove(closeAngle); // Close gate smoothly
+      smoothServoMove(closeAngle); 
       gateOpen = false;
       indicatorsActive = false;
       digitalWrite(RED_LED, HIGH);   // Red LED ON
